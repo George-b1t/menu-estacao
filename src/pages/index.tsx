@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Image from 'next/image'
 
 import { AiOutlineSearch } from 'react-icons/ai';
@@ -9,8 +9,10 @@ import { api } from '../services/api';
 import 'react-toastify/dist/ReactToastify.css';
 
 import styles from '../styles/Home.module.scss'
+import { OrderContext } from '../context/OrderContext';
 
 type item = {
+  id: number;
   name: string;
   description: string;
   valor: number;
@@ -25,6 +27,8 @@ export default function Home() {
   const [ menu, setMenu ] = useState<menuContent[]>([]);
   const [ viewingOrder, setViewingOrder ] = useState<boolean>(false);
   const [ searchedItem, setSearchedItem ] = useState<string>("");
+
+  const { items, addItem, removeItem } = useContext(OrderContext);
 
   useEffect(() => {
     api.get('/menu')
@@ -63,7 +67,7 @@ export default function Home() {
                     <div className={styles.fieldItem}>
                       <section>
                         <p>{item.name}</p>
-                        <button onClick={() => toast.success('ITEM ADICIONADO!')}>
+                        <button onClick={() => addItem(item)}>
                           <span>+</span>{item.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                         </button>
                       </section>
@@ -79,12 +83,26 @@ export default function Home() {
       </body>
       <main className={viewingOrder ? styles.viewingOrder : styles.notViewingOrder}>
         <h1>Pedido</h1>
+        {items.map(item => {
+          return item.name.toLocaleLowerCase().includes(searchedItem.toLocaleLowerCase()) && (
+            <div className={styles.fieldItem}>
+              <section>
+                <p>{item.name}</p>
+                <button onClick={() => removeItem(item.id)}>
+                  <span>+</span>{item.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                </button>
+              </section>
+              <p>{item.description}</p>
+              <div className={styles.itemSeparator} />
+            </div>
+          )
+        })}
       </main>
       <footer>
         <div className={styles.bottomOrder}>
           <div>
             <span>Valor</span>
-            <p>R$ 48,00</p>
+            <p>{items.length > 0 ? items.map(i=>i.valor).reduce((a, b)=>a+b).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'R$ 0,00'}</p>
           </div>
           <button onClick={() => setViewingOrder(o => !o)}>
             {viewingOrder ? 'Fechar' : 'Ver pedido'}
