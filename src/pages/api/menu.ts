@@ -44,19 +44,19 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
           id: 4,
           name: 'Frango com queijo',
           description: '',
-          valor: 8.50
+          valor: 10
         },
         {
           id: 5,
           name: 'Frango com queijo',
           description: '',
-          valor: 8.50
+          valor: 10
         },
         {
           id: 6,
           name: 'Frango com queijo',
           description: '',
-          valor: 8.50
+          valor: 10
         }
       ]
     },
@@ -66,20 +66,43 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         {
           id: 7,
           name: 'X-Bacon',
-          description: '2 carnes, queijo, bacon, salada, frango e presunto.',
-          valor: 8.50
+          description: 'PAO, HAMBURGUER, QUEIJO, BACON, SALADA, FRANGO E PRESUNTO.',
+          valor: 14.2
         },
         {
           id: 8,
           name: 'X-Bacon',
-          description: '2 carnes, queijo, bacon, salada, frango e presunto.',
-          valor: 8.50
+          description: 'PAO, HAMBURGUER, QUEIJO, BACON, SALADA, FRANGO E PRESUNTO.',
+          valor: 14.2
         },
         {
           id: 9,
           name: 'X-Bacon',
-          description: '2 carnes, queijo, bacon, salada, frango e presunto.',
-          valor: 8.50
+          description: 'PAO, HAMBURGUER, QUEIJO, BACON, SALADA, FRANGO E PRESUNTO.',
+          valor: 14.2
+        }
+      ]
+    },
+    {
+      class: 'SUCOS',
+      items: [
+        {
+          id: 10,
+          name: 'Limao',
+          description: '',
+          valor: 3
+        },
+        {
+          id: 11,
+          name: 'Jarra Limao',
+          description: '',
+          valor: 10
+        },
+        {
+          id: 12,
+          name: 'Jarra Laranja',
+          description: '',
+          valor: 7
         }
       ]
     }

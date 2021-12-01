@@ -9,13 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/styled-components": "^5.1.15",
     "axios": "^0.23.0",
     "next": "11.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-icons": "^4.3.1",
     "react-toastify": "^8.0.3",
-    "sass": "^1.43.3"
+    "sass": "^1.43.3",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@types/node": "^16.11.4",
