@@ -1,14 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
-import Image from 'next/image'
-
-import { AiOutlineSearch } from 'react-icons/ai';
-import { ToastContainer, toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
 
 import { api } from '../services/api';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { OrderContext } from '../context/OrderContext';
 import { Header } from '../components/Header';
 import { Container } from '../styles/styles';
 import { MenuClass } from '../components/MenuClass';
@@ -27,10 +22,7 @@ type menuContent = {
 
 export default function Home() {
   const [ menu, setMenu ] = useState<menuContent[]>([]);
-  const [ viewingOrder, setViewingOrder ] = useState<boolean>(false);
-  const [ searchedItem, setSearchedItem ] = useState<string>("");
-
-  const { items, addItem, removeItem } = useContext(OrderContext);
+  const [ tipo, setTipo ] = useState<string>("");
 
   useEffect(() => {
     api.get('/menu')
@@ -39,10 +31,29 @@ export default function Home() {
       });
   }, []);
 
+  function atualiza() {
+    api.put('/tipos', {
+      nome: tipo
+    });
+  }
+
+  function cria() {
+    api.post('/tipos', {
+      nome: tipo
+    });
+  }
+
   return (
     <Container>
       <Header />
       {menu.map(itemClass => <MenuClass nome={itemClass.class} items={itemClass.items} />)}
+      <input type="text" value={tipo} onChange={e => setTipo(e.target.value)} />
+      <button onClick={cria}>
+        Cria
+      </button>
+      <button onClick={atualiza}>
+        Atualiza
+      </button>
     </Container>
   );
 };
