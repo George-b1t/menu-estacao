@@ -1,24 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-
-import { MongoClient, Db, ObjectId } from 'mongodb';
-
-let cachedDb: Db = null;
-
-async function connectToDatabase() {
-  if (cachedDb) {
-    return cachedDb;
-  };
-
-  const client = await MongoClient.connect(process.env.MONGO_URL);
-
-  const dbName = process.env.MONGO_DB;
-
-  const db = client.db(dbName);
-
-  cachedDb = db;
-
-  return db;
-};
+import { ObjectId } from 'mongodb';
+import { connectToDatabase } from "../../services/mongodb";
 
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
   if ( request.method === 'POST' ) {
@@ -29,7 +11,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
     const collection = db.collection(process.env.MONGO_COLLECTION);
 
     const tipoExists = await collection.findOne({
-      nome: nome,
+      class: nome,
     });
 
     if ( tipoExists ) {
@@ -39,8 +21,8 @@ export default async function handler(request: NextApiRequest, response: NextApi
     };
 
     const item = await collection.insertOne({
-      nome,
-      itens: [
+      class: nome,
+      items: [
         {
           id: 1,
           name: 'Frango com queijo',
@@ -59,7 +41,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
     const collection = db.collection(process.env.MONGO_COLLECTION);
 
     const tipoExists = await collection.findOne({
-      nome: nome,
+      class: nome,
     });
 
     if ( !tipoExists ) {
@@ -72,11 +54,13 @@ export default async function handler(request: NextApiRequest, response: NextApi
       "_id": new ObjectId(tipoExists._id)
     }, {
       $set: {
-        itens: [
-          ...tipoExists.itens,
+        items: [
+          ...tipoExists.items,
           {
-            teste: 'OK',
-            id: tipoExists.itens.length + 1
+            id: tipoExists.items.length + 1,
+            description: tipoExists.items[0].description,
+            name: tipoExists.items[0].name,
+            valor: tipoExists.items[0].valor
           }
         ]
       }
