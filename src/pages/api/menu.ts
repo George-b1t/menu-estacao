@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const itens = [];
 
   await collection.find().forEach(item => {
-    itens.push(item.nome);
+    itens.push(item);
   });
 
   return res.json(itens);
